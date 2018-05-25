@@ -1,3 +1,5 @@
+-- jryzkns 2018
+
 local unrequited = {}
 
 function unrequited:generic_entity_load(x,y,spritepath)
