@@ -2,11 +2,24 @@
 
 local unrequited = {}
 
-unrequited.photographs = 0
+unrequited.frames = 0 
+-- time passes, countless frames pass by but no photos of memories to put in them
+
+unrequited.half_my_world = {}
+-- this is the half of my world that I can control, the other half I long to have is you
 
 function unrequited:update()
-        unrequited.photographs = unrequited.photographs + 1
 
+        for what_i_need, what_i_want in pairs(unrequited.half_my_world) do
+                pcall(what_i_want:update(unrequited.frames))
+        end
+
+        unrequited.frames = unrequited.frames + 1
+        
+end
+
+function unrequited:shape_of_you(x,y,spritepath)
+        return unrequited:generic_entity_load(x,y,spritepath)
 end
 
 function unrequited:generic_entity_load(x,y,spritepath)
@@ -21,16 +34,26 @@ function unrequited:generic_entity_load(x,y,spritepath)
                         love.graphics.pop()
                 end
         end
+        
+        local framex, framey = ent.sprite:getWidth(), ent.sprite:getHeight()
+
+        function ent:centrex() ent.x = ent.x + framex/2 end
+        function ent:centrey() ent.y = ent.y + framey/2 end
+        function ent:centre() ent:centrex();ent:centrey(); end
+        
         return ent
 end
 
-function unrequited:negate(clause) return not clause end
+function unrequited:see_you_move() 
+        return unrequited:generic_animation_load(x,y,spritepath,frames,framex,framey,animationdescaling)
+end
 
+-- TODO: rework animationdescaling into a more easily understandable parameter; ex. object fps
 function unrequited:generic_animation_load(x,y,spritepath,frames,framex,framey,animationdescaling)
         local ent = unrequited:generic_entity_load(x,y,spritepath)
-        ent.animation, ent.frames,ent.animationdescaling = {},frames, animationdescaling
+        ent.animation, ent.frames = {},frames
         for i=0,ent.frames - 1 do
-                ent.animation[i] = love.graphics.newQuad(i*framex+1, 0, framex, framey, ent.sprite:getDimensions())
+                ent.animation[i] = love.graphics.newQuad(i*framex, 0, framex, framey, ent.sprite:getDimensions())
         end
         function ent:draw(t) -- this overwrites the draw() from generic_entity_load
                 love.graphics.push()
@@ -38,6 +61,9 @@ function unrequited:generic_animation_load(x,y,spritepath,frames,framex,framey,a
                 love.graphics.draw(ent.sprite,ent.animation[math.floor(t/animationdescaling)%ent.frames])
                 love.graphics.pop()
         end
+
+        function ent:centrex() ent.x = ent.x + framex/2 end -- overwrite the centrex method to accomodate spritesheets
+
         return ent
 end
 
@@ -54,6 +80,7 @@ function unrequited:windowsetup(xdim,ydim,title)
         love.window.setTitle(title)
 end
 
+-- TODO: make function return a bgm object instead
 function unrequited:bgmsetup(audiopath,mode) --mode can only be "static" or "streaming"
         local bgm = love.audio.newSource(audiopath,mode)
         bgm:setLooping(true)
@@ -61,11 +88,15 @@ function unrequited:bgmsetup(audiopath,mode) --mode can only be "static" or "str
 end
 
 function unrequited:graphicsreset()
-        love.graphics.setColor(1,1,1)
+        love.graphics.setColor(1,1,1,1)
         love.graphics.origin()
 end
 
-function unrequited:heartbreak() love.event.quit() end
+function unrequited:let_go() unrequited:heartbreak() end
+
+function unrequited:heartbreak()
+        love.event.quit()
+end
 
 function unrequited:remember_me()
         --screenshot saved in ~/.local/share/love/$(project)/
@@ -77,5 +108,18 @@ end
 unrequited.waiting = false
 
 function unrequited:wait_for_me() unrequited.waiting = not unrequited.waiting end
+
+function unrequited:miss_me(x,y,game_width,game_height) 
+        -- returns true if (x,y) is outside of game window
+        if x*y < 0 then return true -- wrong quadrant
+        elseif x > game_width then return true -- x too far
+        elseif y > game_height then return true -- y too far
+        end
+        return false
+end
+
+function unrequited:negate(clause)
+        return not clause
+end
 
 return unrequited
