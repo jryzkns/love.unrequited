@@ -2,20 +2,18 @@
 
 local unrequited = {}
 
-unrequited.frames = 0 
--- time passes, countless frames pass by but no photos of memories to put in them
+unrequited.photographs = 0 
+-- when time passes, perhaps all that we can keep are photographs
 
-unrequited.half_my_world = {}
+unrequited.half_my_world = {} 
 -- this is the half of my world that I can control, the other half I long to have is you
 
 function unrequited:update()
-
-        for what_i_need, what_i_want in pairs(unrequited.half_my_world) do
-                pcall(what_i_want:update(unrequited.frames))
+        unrequited.photographs = unrequited.photographs + 1
+        -- update all the entities in unrequited.half_my_world as well
+        for what_i_want, what_i_need in pairs(unrequited.half_my_world) do
+                pcall(function() what_i_need:update() end)
         end
-
-        unrequited.frames = unrequited.frames + 1
-        
 end
 
 function unrequited:shape_of_you(x,y,spritepath)
@@ -33,13 +31,14 @@ function unrequited:generic_entity_load(x,y,spritepath)
                                 love.graphics.draw(ent.sprite)
                         love.graphics.pop()
                 end
-        end
-        
-        local framex, framey = ent.sprite:getWidth(), ent.sprite:getHeight()
 
-        function ent:centrex() ent.x = ent.x + framex/2 end
-        function ent:centrey() ent.y = ent.y + framey/2 end
-        function ent:centre() ent:centrex();ent:centrey(); end
+                local framex, framey = ent.sprite:getWidth(), ent.sprite:getHeight()
+
+                function ent:centrex() ent.x = ent.x + framex/2 end
+                function ent:centrey() ent.y = ent.y + framey/2 end
+                function ent:centre() ent:centrex();ent:centrey(); end
+        
+        end
         
         return ent
 end
@@ -48,7 +47,6 @@ function unrequited:see_you_move()
         return unrequited:generic_animation_load(x,y,spritepath,frames,framex,framey,animationdescaling)
 end
 
--- TODO: rework animationdescaling into a more easily understandable parameter; ex. object fps
 function unrequited:generic_animation_load(x,y,spritepath,frames,framex,framey,animationdescaling)
         local ent = unrequited:generic_entity_load(x,y,spritepath)
         ent.animation, ent.frames = {},frames
@@ -92,6 +90,10 @@ function unrequited:graphicsreset()
         love.graphics.origin()
 end
 
+function unrequited:negate(clause)
+        return not clause
+end
+
 function unrequited:let_go() unrequited:heartbreak() end
 
 function unrequited:heartbreak()
@@ -116,10 +118,6 @@ function unrequited:miss_me(x,y,game_width,game_height)
         elseif y > game_height then return true -- y too far
         end
         return false
-end
-
-function unrequited:negate(clause)
-        return not clause
 end
 
 return unrequited
