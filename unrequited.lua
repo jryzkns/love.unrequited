@@ -8,11 +8,51 @@ unrequited.photographs = 0
 unrequited.half_my_world = {} 
 -- this is the half of my world that I can control, the other half I long to have is you
 
+--maybe also make peripheral input event handlers; look at all the callback functions on the LOVE wiki
+
 function unrequited:update()
         unrequited.photographs = unrequited.photographs + 1
         -- update all the entities in unrequited.half_my_world as well
         for what_i_want, what_i_need in pairs(unrequited.half_my_world) do
-                pcall(function() what_i_need:update() end)
+                if what_i_need.update then what_i_need:update() end
+        end
+end
+
+function unrequited:draw()
+        unrequited:graphicsreset()
+
+        -- how to tackle the problem of draw order?
+        for what_i_want, what_i_saw in pairs(unrequited.half_my_world) do
+                if what_i_saw.draw then what_i_saw:draw() end
+        end
+
+        -- for _,item in pairs in ipairs(draw_order) 
+        -- suppose we also pass in an ordered array of object names that is not part of unrequited but the data itself
+        --      pcall(function() unrequited.half_my_world[item]:draw() end)
+        -- end
+end
+
+function unrequited:mousepressed(x,y,button,istouch,presses)
+        for what_i_want, what_i_touched in pairs(unrequited.half_my_world) do
+                if what_i_touched.mousepressed then what_i_touched:mousepressed(x,y,button,istouch,presses) end
+        end
+end
+
+function unrequited:mousereleased(x,y,button,istouch,presses)
+        for what_i_want, me_letting_go in pairs(unrequited.half_my_world) do
+                if me_letting_go.mousereleased then me_letting_go:mousereleased(x,y,button,istouch,presses) end
+        end
+end
+
+function unrequited:keypressed(key,scancode,isrepeat)
+        for what_i_want, what_i_held in pairs(unrequited.half_my_world) do
+                if what_i_held.keypressed then what_i_held:keypressed(key,scancode,isrepeat) end
+        end
+end
+
+function unrequited:keyreleased(key,scancode)
+        for what_i_want, what_got_away in pairs(unrequited.half_my_world) do
+                if what_got_away.keyreleased then what_got_away:keyreleased(key,scancode) end
         end
 end
 
