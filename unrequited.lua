@@ -83,7 +83,7 @@ function unrequited:generic_entity_load(x,y,spritepath)
         return ent
 end
 
-function unrequited:see_you_move() 
+function unrequited:see_you_move(x,y,spritepath,frames,framex,framey,animationdescaling) 
         return unrequited:generic_animation_load(x,y,spritepath,frames,framex,framey,animationdescaling)
 end
 
