@@ -1,6 +1,6 @@
 -- jryzkns 2018
 
-local unrequited = {}
+unrequited = {}
 
 unrequited.photographs = 0 
 -- when time passes, perhaps all that we can keep are photographs
@@ -83,7 +83,7 @@ function unrequited:generic_entity_load(x,y,spritepath)
         return ent
 end
 
-function unrequited:see_you_move(x,y,spritepath,frames,framex,framey,animationdescaling) 
+function unrequited:see_you_move() 
         return unrequited:generic_animation_load(x,y,spritepath,frames,framex,framey,animationdescaling)
 end
 
