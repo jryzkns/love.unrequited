@@ -10,6 +10,11 @@ unrequited.half_my_world = {}
 
 --maybe also make peripheral input event handlers; look at all the callback functions on the LOVE wiki
 
+-- your_name has to be a string
+function unrequited:closer_to_me(your_name)
+        unrequited.half_my_world[your_name] = require(your_name)
+end
+
 function unrequited:update()
         unrequited.photographs = unrequited.photographs + 1
         -- update all the entities in unrequited.half_my_world as well
