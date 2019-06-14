@@ -10,6 +10,10 @@ This is simply a wrapper module for me to use LOVE2D more easily. I will extend 
 - functions to handle animation changes and user input.
 - More To be added
 
+##Template Usage
+- `git clone` this repo as your project directory, rename as you like
+- change the `project` variable in Makefile into the name of the project directory and simply run make inside th directory
+
 As this module grows, I will start to actually write documentation and tutorials on how to use this module. Bear with me
 
 jryzkns 2018
