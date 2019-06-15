@@ -1,6 +1,7 @@
--- jryzkns 2018
+-- jryzkns 2019
 
-unrequited = {}
+-- and so a story begins,
+local unrequited = {}
 
 unrequited.photographs = 0 
 -- when time passes, perhaps all that we can keep are photographs
@@ -8,68 +9,91 @@ unrequited.photographs = 0
 unrequited.half_my_world = {} 
 -- this is the half of my world that I can control, the other half I long to have is you
 
---maybe also make peripheral input event handlers; look at all the callback functions on the LOVE wiki
+unrequited.grounds = {}
+-- things before my eyes, there's almost an order to them; 
+unrequited.now_i_see = 1
+-- now I see this, now I see that, 
+-- but if I want to see you, I'd' have to see everything that comes before too
 
--- your_name has to be a string
 function unrequited:closer_to_me(your_name)
+
         unrequited.half_my_world[your_name] = require(your_name)
+        
+        unrequited.grounds[unrequited.now_i_see] = your_name
+        unrequited.now_i_see = unrequited.now_i_see + 1
+
 end
 
-function unrequited:update()
+function unrequited:update(n_frames,dt)
+
         unrequited.photographs = unrequited.photographs + 1
-        -- update all the entities in unrequited.half_my_world as well
+        
         for what_i_want, what_i_need in pairs(unrequited.half_my_world) do
-                if what_i_need.update then what_i_need:update() end
+                if what_i_need.update then what_i_need:update(n_frames, dt) end
         end
 end
 
 function unrequited:draw()
+
         unrequited:graphicsreset()
 
-        -- how to tackle the problem of draw order?
-        for what_i_want, what_i_saw in pairs(unrequited.half_my_world) do
-                if what_i_saw.draw then what_i_saw:draw() end
+        for _, item in ipairs(unrequited.grounds) do
+                
+                if unrequited.half_my_world[item].draw then 
+                        unrequited.half_my_world[item]:draw() 
+                end
+
         end
 
-        -- for _,item in pairs in ipairs(draw_order) 
-        -- suppose we also pass in an ordered array of object names that is not part of unrequited but the data itself
-        --      pcall(function() unrequited.half_my_world[item]:draw() end)
-        -- end
 end
 
 function unrequited:mousepressed(x,y,button,istouch,presses)
+
         for what_i_want, what_i_touched in pairs(unrequited.half_my_world) do
                 if what_i_touched.mousepressed then what_i_touched:mousepressed(x,y,button,istouch,presses) end
         end
+
 end
 
 function unrequited:mousereleased(x,y,button,istouch,presses)
+
         for what_i_want, me_letting_go in pairs(unrequited.half_my_world) do
                 if me_letting_go.mousereleased then me_letting_go:mousereleased(x,y,button,istouch,presses) end
         end
+
 end
 
 function unrequited:keypressed(key,scancode,isrepeat)
+
         for what_i_want, what_i_held in pairs(unrequited.half_my_world) do
                 if what_i_held.keypressed then what_i_held:keypressed(key,scancode,isrepeat) end
         end
+
 end
 
 function unrequited:keyreleased(key,scancode)
+
         for what_i_want, what_got_away in pairs(unrequited.half_my_world) do
                 if what_got_away.keyreleased then what_got_away:keyreleased(key,scancode) end
         end
+
 end
 
 function unrequited:shape_of_you(x,y,spritepath)
+
         return unrequited:generic_entity_load(x,y,spritepath)
+
 end
 
 function unrequited:generic_entity_load(x,y,spritepath)
+
         local ent = {}
         ent.x,ent.y=x,y
+
         if spritepath then
+
                 ent.sprite = love.graphics.newImage(spritepath)
+
                 function ent:draw()
                         love.graphics.push()
                                 love.graphics.translate(ent.x,ent.y)
@@ -89,15 +113,21 @@ function unrequited:generic_entity_load(x,y,spritepath)
 end
 
 function unrequited:see_you_move() 
+        
         return unrequited:generic_animation_load(x,y,spritepath,frames,framex,framey,animationdescaling)
+
 end
 
 function unrequited:generic_animation_load(x,y,spritepath,frames,framex,framey,animationdescaling)
+
         local ent = unrequited:generic_entity_load(x,y,spritepath)
+
         ent.animation, ent.frames = {},frames
+
         for i=0,ent.frames - 1 do
                 ent.animation[i] = love.graphics.newQuad(i*framex, 0, framex, framey, ent.sprite:getDimensions())
         end
+
         function ent:draw(t) -- this overwrites the draw() from generic_entity_load
                 love.graphics.push()
                 love.graphics.translate(ent.x,ent.y)
@@ -111,45 +141,60 @@ function unrequited:generic_animation_load(x,y,spritepath,frames,framex,framey,a
 end
 
 function unrequited:generic_window(x,y,w,h)
+
         local ent = unrequited:generic_entity_load(x,y,nil)
+
         ent.show = false
         ent.width,ent.height = w,h
+
         return ent
 
 end
 
 function unrequited:windowsetup(xdim,ydim,title)
+
         love.window.setMode(xdim,ydim)
         love.window.setTitle(title)
+
 end
 
 -- TODO: make function return a bgm object instead
 function unrequited:bgmsetup(audiopath,mode) --mode can only be "static" or "streaming"
+
         local bgm = love.audio.newSource(audiopath,mode)
         bgm:setLooping(true)
         bgm:play()
+
 end
 
 function unrequited:graphicsreset()
+
         love.graphics.setColor(1,1,1,1)
         love.graphics.origin()
+
 end
 
 function unrequited:negate(clause)
+
         return not clause
+
 end
 
 function unrequited:let_go() unrequited:heartbreak() end
 
 function unrequited:heartbreak()
+
         love.event.quit()
+
 end
 
 function unrequited:remember_me()
+
         --screenshot saved in ~/.local/share/love/$(project)/
         love.filesystem.createDirectory("unrequited memories")
         local filename = "unrequited memories/unrequited_memory" .. os.time() .. ".png" 
         love.graphics.captureScreenshot(filename)
+
 end
 
 unrequited.waiting = false
@@ -157,12 +202,15 @@ unrequited.waiting = false
 function unrequited:wait_for_me() unrequited.waiting = not unrequited.waiting end
 
 function unrequited:miss_me(x,y,game_width,game_height) 
+
         -- returns true if (x,y) is outside of game window
         if x*y < 0 then return true -- wrong quadrant
         elseif x > game_width then return true -- x too far
         elseif y > game_height then return true -- y too far
         end
         return false
+
 end
 
 return unrequited
+-- and hopefully, the legacy lives on, but the pain won't
