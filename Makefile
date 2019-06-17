@@ -1,10 +1,10 @@
-project = Template
+project = love.unrequited
 
 default:
-	love ../$(project)
+	@love ../$(project)
 
 clean:
-	rm -rf ~/.local/share/love/$(project)/
+	@rm -rf ~/.local/share/love/$(project)/
 
 show:
 	ls ~/.local/share/love/$(project)/
