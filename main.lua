@@ -2,15 +2,17 @@ local unrequited = require("unrequited")
 
 function love.load()
         game = {}
-        game.xdim, game.ydim = 800,700
+        game.xdim, game.ydim = 800, 700
         game.title = ""
         unrequited:windowsetup(game.xdim,game.ydim,game.title)
+
+        unrequited:closer_to_me('sample')
 
 end
 
 function love.update(dt)
         if not unrequited.waiting then
-                unrequited:update()
+                unrequited:update(dt)
         end
 end
 
@@ -23,15 +25,19 @@ function love.mousereleased(x,y,button,istouch,presses)
 end
 
 function love.keypressed(key,scancode,isrepeat)
-        if key == "space" then unrequited:wait_for_me()
-        elseif key == "p" then unrequited:remember_me()
+        if key == "space" then 
+                unrequited:wait_for_me()
+        elseif key == "p" then 
+                unrequited:remember_me()
         end
 
         unrequited:keypressed(key,scancode,isrepeat)
 end
 
 function love.keyreleased(key,scancode)
-        if key == "escape" then unrequited:heartbreak() end
+        if key == "escape" then 
+                unrequited:heartbreak() 
+        end
         unrequited:keyreleased(key,scancode)
 end
 
