@@ -22,14 +22,16 @@ function unrequited:closer_to_me(your_name)
         unrequited.grounds[unrequited.now_i_see] = your_name
         unrequited.now_i_see = unrequited.now_i_see + 1
 
+        if unrequited.half_my_world[your_name].init then unrequited.half_my_world[your_name].init() end
+
 end
 
-function unrequited:update(n_frames,dt)
+function unrequited:update(dt)
 
         unrequited.photographs = unrequited.photographs + 1
         
         for what_i_want, what_i_need in pairs(unrequited.half_my_world) do
-                if what_i_need.update then what_i_need:update(n_frames, dt) end
+                if what_i_need.update then what_i_need:update(unrequited.photographs, dt) end
         end
 end
 
@@ -158,9 +160,9 @@ function unrequited:windowsetup(xdim,ydim,title)
 
 end
 
--- TODO: make function return a bgm object instead
-function unrequited:bgmsetup(audiopath,mode) --mode can only be "static" or "streaming"
-
+--mode can only be "static" or "streaming"
+function unrequited:bgmsetup(audiopath,mode)
+        
         local bgm = love.audio.newSource(audiopath,mode)
         bgm:setLooping(true)
         bgm:play()

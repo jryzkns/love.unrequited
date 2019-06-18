@@ -1,4 +1,4 @@
-project = Template
+project = love.unrequited
 
 default:
 	love ../$(project)
