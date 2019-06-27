@@ -6,6 +6,9 @@ local unrequited = {}
 unrequited.photographs = 0 
 -- when time passes, perhaps all that we can keep are photographs
 
+unrequited.dt = 0
+-- the time that have passed may have been small, but every second counts
+
 unrequited.half_my_world = {} 
 -- this is the half of my world that I can control, the other half I long to have is you
 
@@ -29,7 +32,8 @@ end
 function unrequited:update(dt)
 
         unrequited.photographs = unrequited.photographs + 1
-        
+        unrequited.dt = dt
+
         for what_i_want, what_i_need in pairs(unrequited.half_my_world) do
                 if what_i_need.update then what_i_need:update(unrequited.photographs, dt) end
         end
@@ -42,7 +46,7 @@ function unrequited:draw()
         for _, item in ipairs(unrequited.grounds) do
                 
                 if unrequited.half_my_world[item].draw then 
-                        unrequited.half_my_world[item]:draw() 
+                        unrequited.half_my_world[item]:draw(unrequited.photographs, unrequited.dt) 
                 end
 
         end
@@ -83,11 +87,11 @@ end
 
 function unrequited:shape_of_you(x,y,spritepath)
 
-        return unrequited:generic_entity_load(x,y,spritepath)
+        return unrequited:generic_entity_load(x,y,spritepath,false)
 
 end
 
-function unrequited:generic_entity_load(x,y,spritepath)
+function unrequited:generic_entity_load(x,y,spritepath,is_animate)
 
         local ent = {}
         ent.x,ent.y=x,y
@@ -96,55 +100,75 @@ function unrequited:generic_entity_load(x,y,spritepath)
 
                 ent.sprite = love.graphics.newImage(spritepath)
 
-                function ent:draw()
-                        love.graphics.push()
-                                love.graphics.translate(ent.x,ent.y)
-                                love.graphics.draw(ent.sprite)
-                        love.graphics.pop()
+                if not is_animate then
+                        
+                        function ent:draw()
+                                love.graphics.push()
+                                        love.graphics.translate(ent.x,ent.y)
+                                        love.graphics.draw(ent.sprite)
+                                love.graphics.pop()
+                        end
+        
+                        local spritex, spritey = ent.sprite:getWidth(), ent.sprite:getHeight()
+        
+                        function ent:centrex() ent.x = ent.x + spritex/2 end
+                        function ent:centrey() ent.y = ent.y + spritey/2 end
+                        function ent:centre() ent:centrex();ent:centrey(); end
+
                 end
-
-                local framex, framey = ent.sprite:getWidth(), ent.sprite:getHeight()
-
-                function ent:centrex() ent.x = ent.x + framex/2 end
-                function ent:centrey() ent.y = ent.y + framey/2 end
-                function ent:centre() ent:centrex();ent:centrey(); end
         
         end
         
         return ent
 end
 
-function unrequited:see_you_move() 
+function unrequited:see_you_move(x,y,spritepath,frames,framex,framey,fps) 
         
-        return unrequited:generic_animation_load(x,y,spritepath,frames,framex,framey,animationdescaling)
+        return unrequited:generic_animation_load(x,y,spritepath,frames,framex,framey,fps)
 
 end
 
-function unrequited:generic_animation_load(x,y,spritepath,frames,framex,framey,animationdescaling)
+-- sprite sheet MUST be 1 x n frames, NO PADDING!
+function unrequited:generic_animation_load(x,y,spritepath,frames,framex,framey,fps)
 
-        local ent = unrequited:generic_entity_load(x,y,spritepath)
+        local ent = unrequited:generic_entity_load(x,y,spritepath,true)
 
-        ent.animation, ent.frames = {},frames
+        ent.animation_quads, ent.frames, ent.fps = {}, frames, fps
 
         for i=0,ent.frames - 1 do
-                ent.animation[i] = love.graphics.newQuad(i*framex, 0, framex, framey, ent.sprite:getDimensions())
+                ent.animation_quads[i] = love.graphics.newQuad( i*framex, 0,    -- starting point
+                                                                framex, framey, -- quad size
+                                                                ent.sprite:getDimensions()
+                                                        )
         end
 
-        function ent:draw(t) -- this overwrites the draw() from generic_entity_load
+        ent.cum_dt, ent.current_frame = 0, 0
+
+        function ent:draw(t, dt)
+                ent.cum_dt = ent.cum_dt + dt
+                
+                -- local current_frame = math.floor(t/animationdescaling) % ent.frames
+                if ent.cum_dt > 1/ent.fps then
+                        ent.current_frame = (ent.current_frame + 1) % ent.frames
+                        ent.cum_dt = ent.cum_dt - 1/ent.fps
+                end
+
                 love.graphics.push()
-                love.graphics.translate(ent.x,ent.y)
-                love.graphics.draw(ent.sprite,ent.animation[math.floor(t/animationdescaling)%ent.frames])
+                        love.graphics.translate(ent.x,ent.y)
+                        love.graphics.draw(     ent.sprite,
+                                                ent.animation_quads[ent.current_frame]
+                                        )
                 love.graphics.pop()
         end
 
-        function ent:centrex() ent.x = ent.x + framex/2 end -- overwrite the centrex method to accomodate spritesheets
+        function ent:centrex() ent.x = ent.x - framex/2 end 
 
         return ent
 end
 
 function unrequited:generic_window(x,y,w,h)
 
-        local ent = unrequited:generic_entity_load(x,y,nil)
+        local ent = unrequited:generic_entity_load(x,y,nil,false)
 
         ent.show = false
         ent.width,ent.height = w,h
