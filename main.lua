@@ -3,10 +3,10 @@ local unrequited = require("unrequited")
 function love.load()
         game = {}
         game.xdim, game.ydim = 800, 700
-        game.title = ""
+        game.title = "animation testing"
         unrequited:windowsetup(game.xdim,game.ydim,game.title)
 
-        unrequited:closer_to_me('sample')
+        unrequited:closer_to_me('espada')
 
 end
 
