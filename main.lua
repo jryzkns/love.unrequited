@@ -2,7 +2,7 @@ local unrequited = require("unrequited")
 
 function love.load()
         game = {}
-        game.xdim, game.ydim = 800, 700
+        game.xdim, game.ydim = 640, 360
         game.title = ""
         unrequited:windowsetup(game.xdim,game.ydim,game.title)
 
