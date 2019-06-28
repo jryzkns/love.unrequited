@@ -123,12 +123,9 @@ function unrequited:generic_entity_load(x,y,spritepath,is_animate)
 end
 
 function unrequited:see_you_move(x,y,spritepath,frames,framex,framey,fps) 
-        
         return unrequited:generic_animation_load(x,y,spritepath,frames,framex,framey,fps)
-
 end
 
--- sprite sheet MUST be 1 x n frames, NO PADDING!
 function unrequited:generic_animation_load(x,y,spritepath,frames,framex,framey,fps)
 
         local ent = unrequited:generic_entity_load(x,y,spritepath,true)
@@ -147,7 +144,6 @@ function unrequited:generic_animation_load(x,y,spritepath,frames,framex,framey,f
         function ent:draw(t, dt)
                 ent.cum_dt = ent.cum_dt + dt
                 
-                -- local current_frame = math.floor(t/animationdescaling) % ent.frames
                 if ent.cum_dt > 1/ent.fps then
                         ent.current_frame = (ent.current_frame + 1) % ent.frames
                         ent.cum_dt = ent.cum_dt - 1/ent.fps
