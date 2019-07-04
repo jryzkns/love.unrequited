@@ -90,6 +90,15 @@ function unrequited:generic_entity_load(x, y, spritepath, is_animate)
         local ent = {}
         ent.x, ent.y = x, y
         ent.x_offset, ent.y_offset = 0, 0
+
+        ent.rotation = 0
+        ent.rotationstyle = "FREE"      -- free rotate by default
+        ent.rotationstyles = {  "FLAT",         -- no rotations whatsoever
+                                "FREE",         -- rotation anyway you want
+                                "HEMISPHERE",   -- only rotate half-way, other half mirror
+                                "TWO-WAY"       -- only facing one way or the other
+        }
+
         if spritepath then
                 ent.sprite = love.graphics.newImage(spritepath)
 
@@ -105,7 +114,16 @@ function unrequited:generic_entity_load(x, y, spritepath, is_animate)
 
                         function ent:draw()
                                 love.graphics.push()
-                                love.graphics.translate(ent.x - ent.x_offset, ent.y - ent.y_offset)
+                                love.graphics.translate(ent.x, ent.y)
+                                if ent.rotationstyle == "FREE" then
+                                        love.graphics.rotate(ent.rotation)
+                                elseif ent.rotationstyle == "TWO-WAY" then
+                                        -- if you are on one hemisphere, do nothing, 
+                                        -- else flip the x offset
+                                elseif ent.rotationstyle == "HEMISPHERE" then
+                                        -- stuff
+                                end
+                                love.graphics.translate(-ent.x_offset, -ent.y_offset)
                                 love.graphics.draw(ent.sprite)
                                 love.graphics.pop()
                                 if ent.debug_align then ent:show_align_cross() end
@@ -157,13 +175,20 @@ function unrequited:generic_animation_load(x, y, spritepath, frames, framex, fra
                 end
 
                 love.graphics.push()
-                love.graphics.translate(ent.x - ent.x_offset, ent.y - ent.y_offset)
+                love.graphics.translate(ent.x, ent.y)
+                if ent.rotationstyle == "FREE" then
+                        love.graphics.rotate(ent.rotation)
+                elseif ent.rotationstyle == "TWO-WAY" then
+                        -- if you are on one hemisphere, do nothing, 
+                        -- else flip the x offset
+                elseif ent.rotationstyle == "HEMISPHERE" then
+                        -- stuff
+                end
+                love.graphics.translate(-ent.x_offset, -ent.y_offset)
                 love.graphics.draw(ent.sprite, ent.animation_quads[ent.current_frame])
                 love.graphics.pop()
 
-                if ent.debug_align then
-                        ent:show_align_cross()
-                end
+                if ent.debug_align then ent:show_align_cross() end
         end
 
         function ent:centrex()
