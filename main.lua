@@ -1,3 +1,5 @@
+-- jryzkns 2019
+
 local unrequited = require("unrequited")
 
 function love.load()
@@ -6,7 +8,7 @@ function love.load()
         game.title = ""
         unrequited:windowsetup(game.xdim,game.ydim,game.title)
 
-        unrequited:closer_to_me('sample')
+        unrequited:closer_to_me('fragment')
 
 end
 
