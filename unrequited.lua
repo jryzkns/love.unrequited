@@ -34,6 +34,9 @@ function unrequited:update(dt)
         unrequited.dt = dt
 
         for what_i_want, what_i_need in pairs(unrequited.half_my_world) do
+                if what_i_need.__update then
+                        what_i_need:__update(unrequited.photographs, dt)
+                end
                 if what_i_need.update then
                         what_i_need:update(unrequited.photographs, dt)
                 end
@@ -44,6 +47,9 @@ function unrequited:draw()
         unrequited:graphicsreset()
 
         for _, item in ipairs(unrequited.grounds) do
+                if unrequited.half_my_world[item].__draw then
+                        unrequited.half_my_world[item]:__draw(unrequited.photographs, unrequited.dt)
+                end
                 if unrequited.half_my_world[item].draw then
                         unrequited.half_my_world[item]:draw(unrequited.photographs, unrequited.dt)
                 end
@@ -121,7 +127,7 @@ function unrequited:generic_entity_load(x, y, spritepath, is_animate)
                 if not is_animate then
                         ent.box = ent.sprite:getDimensions()
 
-                        function ent:draw()
+                        function ent:__draw()
                                 love.graphics.push()
                                 love.graphics.translate(ent.x, ent.y)
                                 ent:rotation_handle()
@@ -199,13 +205,16 @@ function unrequited:generic_animation_load(x, y, spritepath, frames, framex, fra
 
         ent.cum_dt, ent.current_frame = 0, 0
 
-        function ent:draw(t, dt)
+        function ent:__update(n, dt)
                 ent.cum_dt = ent.cum_dt + dt
-
+        
                 if ent.cum_dt > 1 / ent.fps then
                         ent.current_frame = (ent.current_frame + 1) % ent.frames
                         ent.cum_dt = ent.cum_dt - 1 / ent.fps
                 end
+        end
+
+        function ent:__draw(t, dt)
 
                 love.graphics.push()
                 love.graphics.translate(ent.x, ent.y)
