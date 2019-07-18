@@ -66,6 +66,14 @@ function unrequited:mousereleased(x, y, button, istouch, presses)
         end
 end
 
+function unrequited:wheelmoved(x,y)
+
+        for what_i_moved, what_had_stayed in pairs(unrequited.half_my_world) do
+                if what_had_stayed.wheelmoved then what_had_stayed:wheelmoved(x,y) end
+        end
+
+end
+
 function unrequited:keypressed(key, scancode, isrepeat)
         for what_i_want, what_i_held in pairs(unrequited.half_my_world) do
                 if what_i_held.keypressed then

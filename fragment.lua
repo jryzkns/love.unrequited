@@ -9,4 +9,5 @@ function fragment:mousepressed(x,y,button,istouch,presses) end
 function fragment:mousereleased(x,y,button,istouch,presses) end
 function fragment:keypressed(key,scancode,isrepeat) end
 function fragment:keyreleased(key,scancode) end
+function fragment:wheelmoved(x,y) end
 return fragment
