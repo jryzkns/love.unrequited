@@ -43,6 +43,10 @@ function love.keyreleased(key,scancode)
         unrequited:keyreleased(key,scancode)
 end
 
+function love.wheelmoved(x,y)
+        unrequited:wheelmoved(x,y)
+end
+
 function love.draw()
         unrequited:draw()
 end
