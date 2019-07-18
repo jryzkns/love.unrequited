@@ -4,11 +4,11 @@ local unrequited = require("unrequited")
 
 function love.load()
         game = {}
-        game.xdim, game.ydim = 640, 360
-        game.title = ""
+        game.xdim, game.ydim = 1200, 600
+        game.title = "sprite handling"
         unrequited:windowsetup(game.xdim,game.ydim,game.title)
 
-        unrequited:closer_to_me('fragment')
+        unrequited:closer_to_me('sword')
 
 end
 
