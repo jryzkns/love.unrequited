@@ -108,6 +108,7 @@ function unrequited:generic_entity_load(x, y, spritepath, is_animate)
                         love.graphics.line(ent.x, ent.y - 10, ent.x, ent.y + 10)
                 end
 
+                ent.isFlipx = false
                 
                 if not is_animate then
                         ent.box = ent.sprite:getDimensions()
@@ -115,16 +116,19 @@ function unrequited:generic_entity_load(x, y, spritepath, is_animate)
                         function ent:draw()
                                 love.graphics.push()
                                 love.graphics.translate(ent.x, ent.y)
-                                if ent.rotationstyle == "FREE" then
-                                        love.graphics.rotate(ent.rotation)
-                                elseif ent.rotationstyle == "TWO-WAY" then
-                                        -- if you are on one hemisphere, do nothing, 
-                                        -- else flip the x offset
-                                elseif ent.rotationstyle == "HEMISPHERE" then
-                                        -- stuff
-                                end
+                                ent:rotation_handle()
                                 love.graphics.translate(-ent.x_offset, -ent.y_offset)
                                 love.graphics.draw(ent.sprite)
+                                if ent.isFlipx then
+                                        love.graphics.draw(     ent.sprite, 
+                                                                ent.box[1],0,
+                                                                0,
+                                                                -1,1
+                                                        )
+                                else
+                                        love.graphics.draw(ent.sprite)
+                                end
+
                                 love.graphics.pop()
                                 if ent.debug_align then ent:show_align_cross() end
                         end
@@ -133,6 +137,27 @@ function unrequited:generic_entity_load(x, y, spritepath, is_animate)
                 -- x_offset and y_offset are expressed in percentages
                 function ent:recentre(x_offset, y_offset)
                         ent.x_offset, ent.y_offset = x_offset*ent.box[1], y_offset*ent.box[2]
+                end
+
+                function ent:rotation_handle()
+                        if ent.rotationstyle == "FREE" then
+                                love.graphics.rotate(ent.rotation)
+                        elseif ent.rotationstyle == "TWO-WAY" then
+                                if ent.rotation >= math.pi then
+                                        ent.isFlipx = false
+                                else
+                                        ent.isFlipx = true
+                                end
+                        elseif ent.rotationstyle == "HEMISPHERE" then
+                                if ent.rotation >= math.pi then
+                                        ent.isFlipx = false
+                                else
+                                        ent.isFlipx = true
+                                end
+                                love.graphics.rotate(ent.rotation)
+                        -- elseif ent.rotationstyle == "STATIC" then
+                                -- do nothing
+                        end
                 end
 
         else
@@ -176,23 +201,24 @@ function unrequited:generic_animation_load(x, y, spritepath, frames, framex, fra
 
                 love.graphics.push()
                 love.graphics.translate(ent.x, ent.y)
-                if ent.rotationstyle == "FREE" then
-                        love.graphics.rotate(ent.rotation)
-                elseif ent.rotationstyle == "TWO-WAY" then
-                        -- if you are on one hemisphere, do nothing, 
-                        -- else flip the x offset
-                elseif ent.rotationstyle == "HEMISPHERE" then
-                        -- stuff
-                end
+                ent:rotation_handle()
+
                 love.graphics.translate(-ent.x_offset, -ent.y_offset)
-                love.graphics.draw(ent.sprite, ent.animation_quads[ent.current_frame])
+                if ent.isFlipx then
+                        love.graphics.draw(     ent.sprite, 
+                                                ent.animation_quads[ent.current_frame],
+                                                ent.box[1],0,
+                                                0,
+                                                -1,1
+                                        )
+                else
+                        love.graphics.draw(     ent.sprite, 
+                                                ent.animation_quads[ent.current_frame]
+                                        )
+                end
                 love.graphics.pop()
 
                 if ent.debug_align then ent:show_align_cross() end
-        end
-
-        function ent:centrex()
-                ent.x = ent.x - framex / 2
         end
 
         return ent
