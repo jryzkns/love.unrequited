@@ -3,10 +3,13 @@
 local unrequited = require("unrequited")
 
 function love.load()
-        game = {}
-        game.xdim, game.ydim = 640, 360
-        game.title = ""
-        unrequited:windowsetup(game.xdim,game.ydim,game.title)
+        window = {}
+        window.xdim, window.ydim = 640, 360
+        window.title = ""
+        -- gamexdim,gameydim = 640, 360
+        unrequited:windowsetup( window.xdim,window.ydim,window.title
+                                -- ,gamexdim,gameydim
+                        )
 
         unrequited:closer_to_me('fragment')
 
