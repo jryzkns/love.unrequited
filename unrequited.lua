@@ -19,12 +19,17 @@ unrequited.now_i_see = 1
 -- now I see this, now I see that,
 -- but if I want to see you, I'd have to see through everything in the way too
 
-function unrequited:closer_to_me(your_name)
+function unrequited:closer_to_me(your_name, item, non_file)
 
-        unrequited.half_my_world[your_name] = require(your_name)
+        unrequited.half_my_world[your_name] = non_file == nil and require(your_name) or
+                                                (item == nil and {} or item)
 
-        unrequited.grounds[unrequited.now_i_see] = your_name
-        unrequited.now_i_see = unrequited.now_i_see + 1
+        if unrequited.half_my_world[your_name].draw then
+           
+                unrequited.grounds[unrequited.now_i_see] = your_name
+                unrequited.now_i_see = unrequited.now_i_see + 1
+
+        end
 
         if unrequited.half_my_world[your_name].init then
                 unrequited.half_my_world[your_name]:init()
@@ -106,6 +111,13 @@ function unrequited:keyreleased(key, scancode)
                 if what_got_away.keyreleased then what_got_away:keyreleased(key, scancode) end
 
         end
+
+end
+
+function unrequited:pull_my_strings(obj,field,res)
+
+        if not unrequited.half_my_world.obj then unrequited:closer_to_me(obj) end
+        unrequited.half_my_world[obj][field] = res
 
 end
 
