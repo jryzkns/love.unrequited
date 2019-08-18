@@ -3,10 +3,16 @@
 local unrequited = require("unrequited")
 
 function love.load()
-        game = {}
-        game.xdim, game.ydim = 640, 360
-        game.title = ""
-        unrequited:windowsetup(game.xdim,game.ydim,game.title)
+        game, window = {}, {}
+
+        window.title = ""
+        window.xdim, window.ydim = 640, 360
+        g_xdim, g_ydim = 1280, 720
+
+        unrequited:windowsetup( window.xdim, window.ydim,
+                                window.title,
+                                g_xdim,g_ydim
+                        )
 
         unrequited:closer_to_me('fragment')
 
@@ -36,6 +42,8 @@ function love.keypressed(key,scancode,isrepeat)
         unrequited:keypressed(key,scancode,isrepeat)
 end
 
+function love.resize(w,h) unrequited:rescale(w,h) end
+
 function love.keyreleased(key,scancode)
         if key == "escape" then 
                 unrequited:heartbreak() 
@@ -49,4 +57,6 @@ end
 
 function love.draw()
         unrequited:draw()
+
+        love.graphics.circle("fill",1000,700,10)
 end
