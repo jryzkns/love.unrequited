@@ -47,8 +47,9 @@ end
 
 function unrequited:draw()
 
+        
         unrequited:graphicsreset()
-
+        
         for _, item in ipairs(unrequited.grounds) do
 
                 if unrequited.half_my_world[item].__draw then unrequited.half_my_world[item]:__draw(unrequited.photographs, unrequited.dt) end
@@ -268,20 +269,27 @@ function unrequited:generic_animation_load(x, y, spritepath, frames, framex, fra
 
 end
 
-function unrequited:generic_window(x, y, w, h)
+unrequited.windowx, unrequited.windowy = nil,nil
 
-        local ent = unrequited:generic_entity_load(x, y, nil, false)
+function unrequited:windowsetup(wx, wy, title, gx, gy)
+        
+        unrequited.windowx, unrequited.windowy = wx, wy
+        love.window.setMode(wx, wy)
+        love.window.setTitle(title)
 
-        ent.show, ent.width, ent.height = w, h, false
-
-        return ent
-
+        if (gx ~= nil and gy ~= nil) and (gx ~= wx or gy ~= wy )then 
+                unrequited:rescale(gx,gy) 
+        end
+        
 end
 
-function unrequited:windowsetup(xdim, ydim, title)
+unrequited.gamex, unrequited.gamey = nil, nil
+unrequited.winscalex, unrequited.winscaley = 1, 1
 
-        love.window.setMode(xdim, ydim)
-        love.window.setTitle(title)
+function unrequited:rescale(gx,gy)
+
+        unrequited.gamex, unrequited.gamey = gx, gy
+        unrequited.winscalex, unrequited.winscaley = unrequited.windowx/gx, unrequited.windowy/gy
 
 end
 
@@ -298,6 +306,7 @@ function unrequited:graphicsreset()
 
         love.graphics.setColor(1, 1, 1, 1)
         love.graphics.origin()
+        love.graphics.scale(unrequited.winscalex, unrequited.winscaley)
 
 end
 
