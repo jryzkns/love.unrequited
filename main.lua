@@ -10,6 +10,20 @@ function love.load()
 
         unrequited:closer_to_me('fragment')
 
+        unrequited:pull_my_strings('fragment','my_name',make_name())
+
+        unrequited.half_my_world['fragment'].my_name:test()
+
+end
+
+function make_name() 
+        
+        item = {}
+        function item:test()
+                print("test")
+        end
+        return item
+
 end
 
 function love.update(dt)
