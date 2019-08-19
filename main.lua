@@ -13,6 +13,10 @@ function love.load()
 
         unrequited:closer_to_me('fragment')
 
+        unrequited:pull_my_strings("sound","stream",unrequited:setup_bgm("a440.mp3"))
+
+        unrequited.hmw["sound"].stream:play()
+
 end
 
 function love.update(dt)

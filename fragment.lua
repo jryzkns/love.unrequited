@@ -2,12 +2,17 @@
 -- fragments were everywhere...
 local unrequited = require('unrequited')
 local fragment = {}
-function fragment:init() end
+function fragment:init() 
+        fragment.sfx = unrequited:setup_sfx("a440.mp3")
+
+end
 function fragment:update(n_frames, dt) end
 function fragment:draw() end
 function fragment:mousepressed(x,y,button,istouch,presses) end
 function fragment:mousereleased(x,y,button,istouch,presses) end
-function fragment:keypressed(key,scancode,isrepeat) end
+function fragment:keypressed(key,scancode,isrepeat) 
+        fragment.sfx:play()
+end
 function fragment:keyreleased(key,scancode) end
 function fragment:wheelmoved(x,y) end
 return fragment
