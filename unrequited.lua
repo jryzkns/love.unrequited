@@ -11,6 +11,7 @@ unrequited.dt = 0
 
 unrequited.half_my_world = {}
 -- this is the half of my world that I can control, the other half I long to have is you
+unrequited.hmw = unrequited.half_my_world
 
 unrequited.grounds = {}
 -- things before my eyes, there's almost an order to them;
@@ -21,7 +22,7 @@ unrequited.now_i_see = 1
 
 function unrequited:closer_to_me(your_name, item, non_file)
 
-        unrequited.half_my_world[your_name] = non_file == nil and require(your_name) or
+        unrequited.half_my_world[your_name] = (non_file == nil and require(your_name)) or
                                                 (item == nil and {} or item)
 
         if unrequited.half_my_world[your_name].draw then
@@ -116,7 +117,9 @@ end
 
 function unrequited:pull_my_strings(obj,field,res)
 
-        if not unrequited.half_my_world.obj then unrequited:closer_to_me(obj) end
+        if not obj.name then obj,name = obj end
+
+        if not unrequited.half_my_world.obj then unrequited:closer_to_me(obj,name, obj, nil) end
         unrequited.half_my_world[obj][field] = res
 
 end
@@ -305,12 +308,17 @@ function unrequited:rescale(gx,gy)
 
 end
 
---mode can only be "static" or "streaming"
-function unrequited:bgmsetup(audiopath, mode)
+function unrequited:setup_bgm(audiopath, mode)
 
-        local bgm = love.audio.newSource(audiopath, mode)
+        bgm = love.audio.newSource(audiopath, mode ~= nil and mode or 'stream')
         bgm:setLooping(true)
-        bgm:play()
+        return bgm
+
+end
+
+function unrequited:setup_sfx(audiopath, mode)
+
+        return love.audio.newSource(audiopath, mode ~= nil and mode or 'static')
 
 end
 
