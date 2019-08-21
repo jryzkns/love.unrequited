@@ -11,7 +11,7 @@
 
 ## Here stands a monument
 
-#### :musical_note: [__"Throw your arms 'round me,    give my heart ease..."__](https://youtu.be/DCf4pc_sAJY?t=119) :musical_note:
+#### :musical_note: [__"Throw your arms 'round me,    give my heart ease..."__](https://youtu.be/DCf4pc_sAJY?t=119 "(target|_blank)")) :musical_note:
 
 I like to think that this is a little more than a simple library for someone to simply `require("unrequited")` into a LÖVE2D project. Aside from some helper functions, `love.unrequited` provides an extra layer on top of the existing LÖVE2D engine.
 
