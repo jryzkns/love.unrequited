@@ -13,6 +13,8 @@
 
 :musical_note: <b><a href= "https://youtu.be/DCf4pc_sAJY?t=119" target="_blank" rel="noopener">"Throw your arms 'round me, give my heart ease..."</a></b>:musical_note:
 
+["Throw your arms 'round me, give my heart ease..."](https://youtu.be/DCf4pc_sAJY?t=119){:target="_blank"}
+
 I like to think that this is a little more than a simple library for someone to simply `require("unrequited")` into a LÖVE2D project. Aside from some helper functions, `love.unrequited` provides an extra layer on top of the existing LÖVE2D engine.
 
 The project began as a little souvenir from a <!--~~heartbroken~~--> difficult time, but with the seed I had planted it had grown to become so much more than a helper library with some edgy function names. So this sits here as a monument to show that on things may look plain and shallow on the surface, down below could be a whole world of emotions that everyone outside is blind to. A monument that- in the middle of all the cold marble lodges a warm<!--broken--> beating heart.
