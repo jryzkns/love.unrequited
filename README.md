@@ -9,11 +9,13 @@
 + [Bugs, Improvements, suggests, and etc.](#etc)
 + [Plans for the future](#Plans)
 
-#### __"Throw your arms 'round me,    give my heart ease..."__
+## Here stands a monument
 
-I like to think that this is a little more than a simple library to use with LÖVE2D. Aside the helper functions love.unrequited provides an extra layer on top of the existing LÖVE2D engine.
+#### :musical_note: [__"Throw your arms 'round me,    give my heart ease..."__](https://youtu.be/DCf4pc_sAJY?t=119) :musical_note:
 
-The project began as a little souvenir from a <!--heartbroken--> difficult time, but it had grown to become so much more than that. So this sits here as a monument to show that on things may look plain and shallow on the surface, but down below there could a whole world of things going on. A monument that, in the middle of all the cold marble lodges a warm<!--broken--> beating heart.
+I like to think that this is a little more than a simple library for someone to simply `require("unrequited")` into a LÖVE2D project. Aside from some helper functions, `love.unrequited` provides an extra layer on top of the existing LÖVE2D engine.
+
+The project began as a little souvenir from a <!--~~heartbroken~~--> difficult time, but with the seed I had planted it had grown to become so much more than a helper library with some edgy function names. So this sits here as a monument to show that on things may look plain and shallow on the surface, down below could be a whole world of emotions that everyone outside is blind to. A monument that- in the middle of all the cold marble lodges a warm<!--broken--> beating heart.
 
 But enough about me. <!-- How I feel doesn't matter anyways. --> `love.unrequited` provides game developers the ability to worry less and think differently about the architecture, and more about the game they are creating, the experience they want to deliver.
 
@@ -44,8 +46,8 @@ Visit [here](DOCS.md).
 
 ## Template Usage
 Attached to this repository is already a [main](main.lua) and [entity](fragment.lua) to show sample usage. In order to use them, follow these steps:
-- `$ git clone git@github.com:jryzkns/love.unrequited.git <Name of your project folder>`
-- Modify the `project` variable in [Makefile](Makefile) into the name of the project directory that you cloned
+- `$ git clone git@github.com:jryzkns/love.unrequited.git <project name>`
+- Modify the `project` variable in [Makefile](Makefile) to `<project name>`
 - `$ make` to run the blank slate project
 
 <a name="Licensing"/>
@@ -58,7 +60,7 @@ In short, you are free to use `love.unrequited` in your own projects, whether it
 
 <a name="etc"/>
 
-## Bugs, Improvements, suggests, and etc.
+## Bugs, Improvements, Suggestions, etc.
 
 Kindly open an issue on this repository and I will have a look at it when I am not too busy soaring in the sky.
 
