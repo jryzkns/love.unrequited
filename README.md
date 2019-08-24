@@ -54,7 +54,7 @@ Attached to this repository is already a [main](main.lua) and [entity](fragment.
 
 <a name="Licensing"/>
 
-## Lincensing
+## Licensing
 
 `love.unrequited` is distributed under the MIT license. See [LICENSE](LICENSE) for more details. 
 
