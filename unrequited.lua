@@ -141,9 +141,9 @@ unrequited.entities = {}
 
         function unrequited.entities:pull_my_strings(obj,field,res)
 
-                if not obj.name then obj,name = obj end
+                if not obj.name then obj.name = obj end
 
-                if not unrequited.half_my_world.obj then unrequited.core:closer_to_me(obj,name, obj, nil) end
+                if not unrequited.half_my_world.obj then unrequited.core:closer_to_me(obj.name, obj, nil) end
                 unrequited.half_my_world[obj][field] = res
                 
         end
