@@ -56,7 +56,7 @@
 - [`unrequited.audio`](#audio)
 - [`unrequited.misc`](#misc)
 
-Each of these [submodules](#submodule) will be explained in detail here.
+Each of these [submodules](#submodule) and the functions they contain will be explained in detail here.
 
 <a name="unrequited"/>
 
@@ -128,7 +128,7 @@ This is the top level of the module that contains all other [submodules](#submod
   - Call this function to exit the game. Equivalent to [`love.event.quit()`](https://love2d.org/wiki/love.event.quit)
   - `stat` can either be an exit code, or the string `"restart"` to restart the game.
 - `unrequited.events:let_go(stat)`
-  - An alias of [`unrequited.events:heartbreak()`](#heartbreak)
+  - An alias of [`unrequited.events:heartbreak`](#heartbreak)
 - `unrequited.events:mousepressed(x, y, button, istouch, presses)`
   - `unrequited` equivalent of the corresponding love function [`love.mousepressed(x, y, button, istouch, presses)`](https://love2d.org/wiki/love.mousepressed)
   - See [Automated Object Handling](#objhandling) for more information
@@ -144,7 +144,6 @@ This is the top level of the module that contains all other [submodules](#submod
 - `unrequited.events:keyreleased(key, scancode)`
   - `unrequited` equivalent of the corresponding love function [`love.keyreleased(key, scancode)`](https://love2d.org/wiki/love.keyreleased)
   - See [Automated Object Handling](#objhandling) for more information
-                
 
 <a name="imagery"/>
 
@@ -157,17 +156,50 @@ This is the top level of the module that contains all other [submodules](#submod
 
 #### `unrequited.entities`
 
-- `unrequited.entities:shape_of_you(x, y, spritepath)`
-  - 
-- `unrequited.entities:generic_entity_load(x, y, spritepath, is_animate)`
-  - 
-- `unrequited.entities:see_you_move(x, y, spritepath, frames, framex, framey, fps)`
-  - 
-- `unrequited.entities:generic_animation_load(x, y, spritepath, frames, framex, framey, fps)`
-  - 
-- `unrequited.entities:pull_my_strings(obj,field,res)`
-  - 
+<a name="ent_load"/>
 
+- `unrequited.entities:generic_entity_load(x, y, spritepath)`
+  - **( x, y, spritepath ) -> Object**
+  - Generates an object with the specified coordinates and sprite. Objects generated with this method contain the following built-in methods:
+    - `ent:recentre(x_offset_perc, x_offset_perc)`
+      - **( x_offset_perc, x_offset_perc ) -> nil**
+      - Sets offset for the object w.r.t its `(x,y)` coordinates
+      - `(x_offset_perc, x_offset_perc)` are expressed as percentages
+      - See [Object Specifications](object_spec) for more details
+    - `ent:show_align_cross()`
+      - function that shows a cross on the centre of the object to help with debugging
+      - set `ent.debug_align = true` to toggle on the function 
+    - `ent:__draw()`
+      - internal drawing function that manually handles the offset and rotational style of the object.
+      - See [Object Specifications](object_spec) for more details
+  - See [Object Specifications](object_spec) for more details
+
+- `unrequited.entities:shape_of_you(x, y, spritepath)`
+  - alias of [`unrequited.entities:generic_entity_load`](#ent_load)
+
+<a name="anim_load"/>
+
+- `unrequited.entities:generic_animation_load(x, y, spritepath, frames, framex, framey, fps)`
+  - **( x, y, spritepath, frames, framex, framey, fps ) -> Object**
+  - Generates an object with the specified coordinates, spritesheet, framesize, and framerate. Objects generated with this method contain built-in functions that are inherited from [`unrequited.entities:generic_entity_load`](#ent_load) and additionally the following:
+    - `ent:__draw()`
+      - internal drawing function that manually handles the offset, rotational style, and animation of the object.
+    - `ent:__update()`
+      - internal update function that handles the animation aspect of the object
+  - Once again, please see [Object Specifications](object_spec) for more details
+- `unrequited.entities:see_you_move(x, y, spritepath, frames, framex, framey, fps)`
+  - alias of [`unrequited.entities:generic_animation_load`](#anim_load)
+- `unrequited.entities:pull_my_strings(obj,field,res)`
+  - **( str, str, result ) -> nil**
+  - adds `field` as a field to `obj`, and assign `res` to `obj.field`
+  - if `obj` does not exist in `unrequited.half_my_world` already, then it will be added
+  - if `obj` does not exist, it will be created as an empty table as well as added to `unrequited.half_my_world`
+  - sample usage:
+  ```lua
+        -- note that `sound` does not exist as a table before
+        unrequited:pull_my_strings("sound","stream",unrequited:setup_bgm("a440.mp3"))
+        unrequited.hmw["sound"].stream:play()
+  ```
 <a name="display"/>
 
 #### `unrequited.display`
@@ -185,17 +217,22 @@ This is the top level of the module that contains all other [submodules](#submod
 #### `unrequited.audio`
 
 - `unrequited.audio:setup_bgm(audiopath, mode)`
-  - 
+  - **(path, mode=stream ) -> Source**
+  - Returns a [Source](https://love2d.org/wiki/Source) object that is automatically looping when playing.
+  - The audio mode is `stream` by default. See [the official wiki](https://love2d.org/wiki/SourceType) for more information.
 - `unrequited.audio:setup_sfx(audiopath, mode)`
-  - 
+  - **(path, mode=static ) -> Source**
+  - Returns a [Source](https://love2d.org/wiki/Source) object
+  - The audio mode is `static` by default. See [the official wiki](https://love2d.org/wiki/SourceType) for more information.
 <a name="misc"/>
 
 #### `unrequited.misc`
 
 - `unrequited.misc:remember_me()`
-  - 
+  - Takes a screenshot and places the screenshot in the game's local directory. The directory differs with platforms, but on linux it is in `~/.local/share/love/$(project)/`. For more information, consult with [the official wiki](https://love2d.org/wiki/love.filesystem).
 - `unrequited.misc:miss_me(x, y, game_width, game_height)`
-  - 
+  - **( x, y, game_width, game_height ) -> Bool**
+  - static function to calculate if a given `(x,y)` is in the window of dimension `game_width x game_height`. Returns `true` if `(x,y)` is **NOT** in the window.
 
 <a name="Integration"/>
 
