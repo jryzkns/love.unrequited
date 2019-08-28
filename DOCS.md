@@ -17,7 +17,12 @@
 
 <a name="object_spec"/>
 
-#### game object specifications
+#### Game Object Specifications
+
+
+<a name="objhandling"/>
+
+#### Automated Object Handling
 
 <a name="pause-tut"/>
 
@@ -26,6 +31,10 @@
 <a name="draw-order"/>
 
 #### managing draw order
+
+<a name="virtres"/>
+
+#### Virtual Resolution
 
 <a name="Tutorial"/>
 
@@ -113,66 +122,80 @@ This is the top level of the module that contains all other [submodules](#submod
 
 #### `unrequited.events`
 
-<!-- function unrequited.events:let_go() 
+<a name="heartbreak"/>
 
-function unrequited.events:heartbreak()
-
-function unrequited.events:mousepressed(x, y, button, istouch, presses)
-        
-function unrequited.events:mousereleased(x, y, button, istouch, presses)
-                
-function unrequited.events:wheelmoved(x,y)
-        
-function unrequited.events:keypressed(key, scancode, isrepeat)
-        
-function unrequited.events:keyreleased(key, scancode) -->
+- `unrequited.events:heartbreak(stat)`
+  - Call this function to exit the game. Equivalent to [`love.event.quit()`](https://love2d.org/wiki/love.event.quit)
+  - `stat` can either be an exit code, or the string `"restart"` to restart the game.
+- `unrequited.events:let_go(stat)`
+  - An alias of [`unrequited.events:heartbreak()`](#heartbreak)
+- `unrequited.events:mousepressed(x, y, button, istouch, presses)`
+  - `unrequited` equivalent of the corresponding love function [`love.mousepressed(x, y, button, istouch, presses)`](https://love2d.org/wiki/love.mousepressed)
+  - See [Automated Object Handling](#objhandling) for more information
+- `unrequited.events:mousereleased(x, y, button, istouch, presses)`
+  - `unrequited` equivalent of the corresponding love function [`love.mousereleased(x, y, button, istouch, presses)`](https://love2d.org/wiki/love.mousereleased)
+  - See [Automated Object Handling](#objhandling) for more information
+- `unrequited.events:wheelmoved(x,y)`
+  - `unrequited` equivalent of the corresponding love function [`love.wheelmoved(x,y)`](https://love2d.org/wiki/love.wheelmoved)
+  - See [Automated Object Handling](#objhandling) for more information
+- `unrequited.events:keypressed(key, scancode, isrepeat)`
+  - `unrequited` equivalent of the corresponding love function [`love.keypressed(key, scancode, isrepeat)`](https://love2d.org/wiki/love.keypressed)
+  - See [Automated Object Handling](#objhandling) for more information
+- `unrequited.events:keyreleased(key, scancode)`
+  - `unrequited` equivalent of the corresponding love function [`love.keyreleased(key, scancode)`](https://love2d.org/wiki/love.keyreleased)
+  - See [Automated Object Handling](#objhandling) for more information
                 
 
 <a name="imagery"/>
 
 #### `unrequited.imagery`
 
-<!-- function unrequited.imagery:graphicsreset() -->
+- `unrequited.imagery:graphicsreset()`
+  - resets the color and resets the draw centre to origin
 
 <a name="entities"/>
 
 #### `unrequited.entities`
-<!-- 
-function unrequited.entities:pull_my_strings(obj,field,res)
 
-function unrequited.entities:shape_of_you(x, y, spritepath)
-
-function unrequited.entities:generic_entity_load(x, y, spritepath, is_animate)
-
-function unrequited.entities:see_you_move(x, y, spritepath, frames, framex, framey, fps)
-
-function unrequited.entities:generic_animation_load(x, y, spritepath, frames, framex, framey, fps) -->
+- `unrequited.entities:shape_of_you(x, y, spritepath)`
+  - 
+- `unrequited.entities:generic_entity_load(x, y, spritepath, is_animate)`
+  - 
+- `unrequited.entities:see_you_move(x, y, spritepath, frames, framex, framey, fps)`
+  - 
+- `unrequited.entities:generic_animation_load(x, y, spritepath, frames, framex, framey, fps)`
+  - 
+- `unrequited.entities:pull_my_strings(obj,field,res)`
+  - 
 
 <a name="display"/>
 
 #### `unrequited.display`
 
-<!-- function unrequited.display:windowsetup(wx, wy, title, gx, gy)
-
-function unrequited.display:rescale(gx,gy) -->
-
+- `unrequited.display:windowsetup(wx, wy, title, gx, gy)`
+  - **(window_x, window_y, window_title, world_x=nil, world_y=nil) -> nil**
+  - sets the dimensions and title of the game window
+  - `gx, gy` are optional parameters that sets the size of the game world to fit into the game window.
+  - See [Virtual Resolutions](#virtres) for more details
+- `unrequited.display:rescale(gx,gy)`
+  - **(gx, gy) -> nil**
+  - See [Virtual Resolutions](#virtres) for more details
 <a name="audio"/>
 
 #### `unrequited.audio`
 
-<!-- function unrequited.audio:setup_bgm(audiopath, mode)
-
-function unrequited.audio:setup_sfx(audiopath, mode) -->
-
+- `unrequited.audio:setup_bgm(audiopath, mode)`
+  - 
+- `unrequited.audio:setup_sfx(audiopath, mode)`
+  - 
 <a name="misc"/>
 
 #### `unrequited.misc`
-<!-- 
-function unrequited.misc:negate(clause)
 
-function unrequited.misc:remember_me()
-
-function unrequited.misc:miss_me(x, y, game_width, game_height) -->
+- `unrequited.misc:remember_me()`
+  - 
+- `unrequited.misc:miss_me(x, y, game_width, game_height)`
+  - 
 
 <a name="Integration"/>
 
