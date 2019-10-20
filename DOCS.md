@@ -93,10 +93,10 @@ This is the top level of the module that contains all other [submodules](#submod
 <a name="closer-to-me"/>
 
 - `unrequited.core:closer_to_me(your_name, item, non_file)`
-  - The main function used to add objects to be automatically handled with `unrequited`, initialized them in the process too.
+  - The main function used to add objects to be automatically handled with `unrequited`, it will automatically initialize the object as well.
   - **( *name*, *object=nil*, *non_file=nil* ) -> nil**
-  - Usage cases:
-    - If the game object (note the [game object specifications](#object_spec)) and its code is written in an independent `.lua` file that is on the same level as `main.lua`, then the function can simply be called as:
+  - Usage:
+    - If the game object (note the [game object specifications](#object_spec)) and its code is written in an independent `.lua` file, then the function can simply be called as:
     ```lua
         -- fragment.lua exists on the same level as main.lua
         unrequited.core:closer_to_me('fragment')
@@ -108,10 +108,10 @@ This is the top level of the module that contains all other [submodules](#submod
     ```
 
 - `unrequited.core:update(dt)`
-  - The function that needs to be called to **update** all of the game objects that `unrequited` is handling. `unrequited` will not work if this function is not called in the corresponding `love.update(dt)` in `main.lua`.
+  - The function that needs to be called to **update** all of the game objects that `unrequited` is handling, if the object has a `:update(n_frames, dt)` function defined. `unrequited` will not work if this function is not called in the corresponding `love.update(dt)` in `main.lua`.
 
 - `unrequited.core:draw()`
-  - The function that needs to be called to **draw** all of the game objects that `unrequited` is handling. `unrequited` will not work if this function is not called in the corresponding `love.draw()` in `main.lua`.
+  - The function that needs to be called to **draw** all of the game objects that `unrequited` is handling, if the object has a `:draw()` function defined. `unrequited` will not work if this function is not called in the corresponding `love.draw()` in `main.lua`.
 
 - `unrequited.core.grounds`
   - An internal array that stores the order at which the objects are being drawn on the screen. It is automatically constructed with calls to [`unrequited.core:closer_to_me`](#closer-to-me), in the order the function is being called.

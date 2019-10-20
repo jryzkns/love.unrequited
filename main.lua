@@ -12,9 +12,9 @@ function love.load()
                         )
 
         unrequited.core:closer_to_me('fragment')
-        unrequited.entities:pull_my_strings('fragment','note',unrequited.audio:setup_sfx("a440.mp3"))
+        -- unrequited.entities:pull_my_strings('fragment','note',unrequited.audio:setup_sfx("a440.mp3"))
 
-        unrequited.hmw['fragment'].note:play()
+        -- unrequited.hmw['fragment'].note:play()
 end
 
 function love.update(dt)
